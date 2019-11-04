@@ -1,0 +1,238 @@
+eureka:
+  server:
+    response-cache-auto-expiration-in-seconds: 180
+    eviction-interval-timer-in-ms: 3000
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
+    #服务刷新时间配置，每隔这个时间会主动心跳一次
+    #默认30s
+    lease-renewal-interval-in-seconds: 10
+    #服务过期时间配置,超过这个时间没有接收到心跳EurekaServer就会将这个实例剔除
+    #注意，EurekaServer一定要设置eureka.server.eviction-interval-timer-in-ms否则这个配置无效，这个配置一般为服务刷新时间配置的三倍
+    #默认90s
+    lease-expiration-duration-in-seconds: 30
+  client:
+    healthcheck: enabled
+    registry-fetch-interval-seconds: 5
+    serviceUrl:
+      defaultZone: http://syt:syt123AZ@register:20021/eureka/
+ribbon:
+  eureka:
+    enabled: true
+  serverListRefreshInterval: 5000
+
+logging:
+  level:
+    com.cishantech: INFO
+
+hystrix:
+  hystrix:
+    enabled: true
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 120000
+
+banner:
+  location: banner.txt
+
+# 配置请求GZIP压缩
+feign:
+    compression:
+        request:
+            enabled: true  # 配置请求GZIP压缩
+            mime-types: text/xml,application/xml,application/json
+            min-request-size: 2048
+        response:
+            enabled: true # 配置响应GZIP压缩
+
+spring:
+  profiles:
+    active: dev
+  redis:
+    database: 0
+    host: 106.15.186.202
+    port: 6379
+    password: AZ2.3sdfawsx23
+    max-idle: 8
+  boot:
+    admin:
+      url: http://localhost:9000
+      client:
+        prefer-ip: true
+  jackson:
+    time-zone: GMT+8
+  http:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
+  zipkin:
+    base-url: http://zipkin:5000
+  sleuth:
+    sampler:
+      percentage: 1.0
+  main:
+    allow-bean-definition-overriding: true
+
+management:
+  security:
+    enabled: false
+
+####### 支付宝配置 #######
+ali:
+  pay:
+    # 支付宝网关名、partnerId和appId
+    openApiDomain: https://openapi.alipay.com/gateway.do
+    mcloudApiDomain: http://mcloudmonitor.com/gateway.do
+    pid: 2088721830194515
+    appId: 2017081808258754
+    #RSA私钥、公钥和支付宝公钥
+    privateKey: MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCD0K7VKWWDxazhs8FFCczfZx7tfm7cF43PWCP00C2Y2T+H5zXqK4SGncC3hrZSezwbKL2aYUumJ8hZV4fKaISiaLgxA29OO6cOywQ3A0cwyBOjuOjVKNdvArRFXLWLZFMFesfBwGUZITx3mkcZ1SBP72AOSx4KUntQ1Fp4vezYffSqw74zI8nTkkVMlLTnEBrjbizY+yRkG1URaf9FGYvciuxMJUkN5YcxYkANXCn0elYrMDv7OxMkm4S+sZwF/eS5qW5P1T0l/RPXYNPlh9qo7V4ANneVUcKEd2z8xqQTTHgVKsPJ5xx7+jmF2KuN3be/LiJ/SmgkAuQ41R30Yr2VAgMBAAECggEAR7q0mPyo6DcWp8+YmYgGu38zHkvR6eTLX4x4LI1ocqet4beY6C/8MwD/UR92cZXsFF9sJelSMD2v0aZHF4cevf48VTeoRytA8lTZm1ImWE5YGZzS3sQVz6vqC2CyzgKvBulUcIPQwAcND4ydqloG9litrbmExFs0Db0w6kl37Cp0cIxTryhEHojSgBesAD4RknhUMnXfBhtqQuYsIIMBZS9eUQLuP61WsV5M7fuhciWH4I+TvKbX3d0gjhrrSV00MnYETOAtWnUUW3OzJUbleOqsAYBdGXyiiHeaeUru5dgi7mRvsRXMvN6XwrDNh9P167NB8XPf69tmRI5bAYSwwQKBgQD8bY7s/XnvGtc1AcrSqeuB/6nzplHux/PwNxAzxNEU1cuTJkdBfW5s4COhWZr/DbTFrCmoaU3cwlIlNCYqwlxWVtYbUPHicw2aV5rvntrKhkPM94be5Og0oC+kB2Hki25WtZcZmjyw1NpKIkktpZKiL+4M772quVnrVUTI8U2u0QKBgQCFrjHOzv/rmWeuH0ltYGjUEFZayWXUkQu/ZdnTuPgeanwMSXv6qu9D2JHzZaEG9+u+5WgZSweLwfWKuz0q18uGE3I7bEDdTcEL8KFFV2EwqziyBFrQ+a0Q7H+jzBYuIr1MY59sGOZW0QsvboZhhuqAe5+hS7dP0B+FZb7ACqD7hQKBgBmw1NEN4zEQnEKK0ieqn4t1h8iCbuhMdWlHUWDTcSwbrkJlrO7fYzO1hCrRwdKfhHxxzzOStBf5tv6OViwX5+npoJTbIiMX7pR8wgoNMttV2uSrdJCO34srmm2pSq9F+Y7doGk8p1yf7S+KWcRJi6jyE9pBNB6CCsLGxN9mn69hAoGAJNiuweIsiDPwb/4PryYzvsACDWQVvVF9e3QHZmRFf5y6NGjM03rqGDlJgV0x1UngoO16k/4qRktf8q1JXtW8M2iIw/hCqL0VyMS6rvI2x8NqDSdGIPOw0ElfpTZLpsvMgZG0D4eNdcCI5LoCMD+Pw3pPtZW5ITaseYhh220SkkECgYEAzj1NlFtgPpd8R48wvslCTpeIAr6NmsSc6qB0A6CV801S6Vm8oh7tqeaRf5idcNoEOMNLTfk+2wSZqAExWiZFGITmdqbLytWttvYMnj2hBfRCQiv9Zha64qpq127B8FMs8k/XOIcyYUxWyx8ASpfk6icy6nkYJMDCAFWwnceOaGg=
+    publicKey: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAhmH2M7+O8SRuVaL6ObIV8BFUao6Q3RbCc71z5MpXPszJgHZMOzhFfhBipSrTZcxxRo+asA+yMDOyRcJg2m0W0IcuqGdVZZ0MMQ3JeoIOwd/Pu3mH/2JWOv6sS2XVYyqiXFxtPQCHdwU5kNH3mU9e1Zz+UobM8n0VNsmvdFq++38m/2jCxdtORABhWkqHZ8Al0q/SQzvH1rJJ3Bauacch7fkbXIwCVuKw4Xz1Ax04Oo1f3KYnXJVE88P4RhTJUNHXbMEsJKjphOdl+aIaLj5Si17TpnblEa12MmY2WaGUT0MI0kdTnO4QUnKqdOyNRKCK3ZDWNohrlW+AWb4Kik0PLwIDAQAB
+    #SHA256withRsa对应支付宝公钥
+    alipayPublicKey: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAy7lg/CCANSEv1W0JbMuvk83UJlWkYroukHoUe3NDEvRTNpjJRj8ObyADl6JZHQM5mtUn0/JBYpURTzG4ynBHUQurorjrx6thWId4GKsvyj9TQVr8120S/HJFbgxre2a6+XxjsCJcnlHa8esoFZ8PhxEd/1fJgto4PnYyOAaPdf4WbPsNPSgCuN0++v+dWljRNhyGc26p0HbL4zPvikWHxB3lPckcieQkTCKuTINB40PCLacJBVRE9TNUtCyAQW315knx2U3oHJ2K0f7I+o9ApooqwGncrTOu5YduAW01l8M2IxHaqLTv+mBIJynQ03mFxDWVWm9F5eruTPrVMJekTwIDAQAB
+    # 签名类型: RSA->SHA1withRsa,RSA2->SHA256withRsa
+    signType: RSA2
+    # 当面付最大查询次数和查询间隔（毫秒）
+    maxQueryRetry: 5
+    queryDuration: 5000
+    # 当面付最大撤销次数和撤销间隔（毫秒）
+    maxCancelRetry: 3
+    cancelDuration: 2000
+    # 交易保障线程第一次调度延迟和调度间隔（秒）
+    heartbeatDelay: 5
+    heartbeatDuration: 900
+    # 回调路径
+    notifyUrl: https://mockapi.sytheheyuanyuan.com/api/order/pay/callback/ali
+    ballNotifyUrl: https://mockapi.sytheheyuanyuan.com/api/order/pay/callback/ali/ball
+    fcNotifyUrl: https://apptest.sytheheyuanyuan.com/api/pay/callback/aliPayCallBack/chromosphere
+     # 是否调用证通支付   true 是   false   原生aliPay
+    flag: false
+
+####### 微信配置 #######
+weixin:
+  pay:
+    #APP id
+    appAppId: wxbb7f1e14f3a8267d
+    #公众号 app id
+    gzAppId: wxfda7473fdc92abb8
+    #\u53D7\u7406\u5546ID\uFF0C\u8EAB\u4EFD\u6807\u8BC6
+    #app 对应商户号
+    appMchId: 1488302612
+    #公众号对应 商户号(小程序)
+    gzMchId: 1464771702
+    #服务商 商户号
+    fwsMchId: 1487770182
+    #善家子商户 商户号
+    sjMchId: 1489075542
+    #微信商户号apikey
+    apiKey: a8e63de18a924619a78bab86d78db9b0
+    #gzMchId: 1464771702 对应的apiKey
+    apiKey2: okjuygtfgvhjgfrclorfdesfgvhjui89
+    #\u56DE\u8C03\u7684\u63A5\u53E3
+    notifyUrl: https://mockapi.sytheheyuanyuan.com/api/order/pay/callback/wx
+    fcNotifyUrl: https://apptest.sytheheyuanyuan.com/api/pay/callback/wxPayCallBack/chromosphere
+    xcxNotifyUrl: https://mockapi.sytheheyuanyuan.com/api/order/pay/callback/wx
+    ballNotifyUrl: https://mockapi.sytheheyuanyuan.com/api/order/pay/callback/wx/ball
+    agentCallBackUrl: https://mockapi.sytheheyuanyuan.com/api/user/callBack/wxPayCallBack
+    unifiedorderUrl: https://api.mch.weixin.qq.com/pay/unifiedorder
+    #\u8BF7\u6C42\u5FAE\u4FE1 \u7EDF\u4E00\u4E0B\u5355\u63A5\u53E3
+    requestWxUrl: https://api.mch.weixin.qq.com/pay/unifiedorder
+    # app secret
+    appSecret: 4b88fc4c882eed9620dd4ebd8f4016b2
+    #app id for APP
+    appIdForApp: wxbb7f1e14f3a8267d
+    #app secret for APP
+    appSecretForApp: eea1ec294d0ce411eae455855bdbc241
+    # 微信小程序 appId
+    xcxAppId: wx592492e7f6989890
+    # 微信小程序 app Secret
+    xcxAppSecret: 8ae6d8cf986064dde7ec1ca79a96849f
+    # 是否调用证通支付   true 是   false   原生aliPay
+    flag: false
+    #微信小程序用户端appid
+    xcxUserAppId: wxe044566748010063
+    #微信小程序用户端secret
+    xcxUserSecret: e6931617be5e9f9298501fc21292296d
+    #微信商户端的小程序appid
+    xcxAgentAppid: wxae3ff9236968b676
+    #微信商户端的小程序Secret
+    xcxAgentSecret: 62d89574731366e2195b36c29107e067
+####### 证通支付配置 #######
+zhengtong:
+  pay:
+    md5Key: MTlEQjhENzRCNjUxNEEyNjhFMDY3QUIzNTIyRTk0RUI=
+    cert: 920171120000001
+    apiUrl: https://www.ect888.com/payweb/SOA/txnAccept/
+    notifyUrl: https://apptest.sytheheyuanyuan.com/api/pay/callback/ztPay
+    refundNotifyUrl: https://app.sytheheyuanyuan.com/api/pay/callback/ztRefund
+####### 通联代付配置 #######
+tlt:
+  pay:
+    username: 20029000002090804
+    password: 111111
+    merchantId: 200290000020908
+    pfxPath: /mw/code/sythhyy/tlt/20029000002090804.p12
+    pfxPassword: 111111
+    cerFile: /mw/code/sythhyy/tlt/allinpay-pds.cer
+    apiUrl: http://tlt.allinpay.com/aipg/ProcessServlet
+
+######银联支付宝微信#######
+bills:
+  pay:
+    appId: 4693814365ce327e01667d26dd09001c
+    appkey: 23fd49d599754b6499fab3663b5d959e
+    getTokenurl: https://api-mop.chinaums.com/v1/token/access
+    merchantCode: 898319979950013
+    terminalCode: '00000001'
+    transactionCurrencyCode: 156
+    merchantRemark: 1234
+    payMode: CODE_SCAN
+    payUrl: https://api-mop.chinaums.com/v2/poslink/transaction/pay
+    refundUrl: https://api-mop.chinaums.com/v2/poslink/transaction/refund
+    queryUrl: https://api-mop.chinaums.com/v2/poslink/transaction/query‐refund
+    voidUrl: https://api-mop.chinaums.com/v2/poslink/transaction/voidpayment
+
+
+
+###设置票箱剩余票数预警值
+alarm:
+  ticket:
+    num: 20
+
+
+
+##河南兑奖参数
+henan:
+  award:
+    requestUrl: http://aly.cigage.com/hn_lottery_claim/open/OpenApi/claim.action
+    businessNo: 10000002
+    notifyUrl: http://9uufiz.natappfree.cc/award/henan/lottery/callback
+    key: evilqmz3wpatr8ae52vaxbz0vbogsknu
+  awardreturn:
+    state: 10000002
+    url: https://open.weixin.qq.com/connect/oauth2/authorize?appid={}&redirect_uri={}&response_type=code&scope=snsapi_base&state={}#wechat_redirect
+    appid: wxefc2410215a68533
+    redirect_uri: http://aly.cigage.com/hn_lottery_claim/wechat/ClaimPrize/wechatAuthLogin.action?claimPrizeCodeCiphertext=
+  #投注站\展示柜同步,对账文件下载
+  device:
+    #商户号
+    businessNo: 10000003
+    #运营商编号
+    operationNo: 403590153387
+    key: 4SW5JWC4OOM8UHCGJ1N29CJNPH534R2E
+
+
+##福彩双色球##
+fucai:
+  lottery:
+    #lottery服务地址
+    lotteryUrl: https://lottery.sytheheyuanyuan.com
+
+
+rsa:
+  publicKey: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA1Tem+/A/GWJNO2i3jhmd8ZfhepRIc5N15xO0yhfb5goYvK4EfNmCPOJUr29uAwSRuz1x0Bza0HWY/l55Usu6KfSUirO807Dt+vDTQQlH5GMf6PCgsjJwsDkWnqsHOoJyPNUu8MYjkVZld0/vrN1CYygYCk3obRbCa9BJf6OPF72Ro18bAA8+g0KHXRZx6USz4b3YTmHwNBI2+Z2Bh2zis7MKnuUTXeNDKh/jO1nYXvLfd/0Myd0gCgH2E3wISq37SAvZfziRQ8/q4Ly72uMvL/zW8Z7id6ES5uQzTVLbZHQX3fCRetDRHG2hVG0FfaviFdF9MHGN8HNz4wQBNDl0qwIDAQAB
+  privateKey: MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDVN6b78D8ZYk07aLeOGZ3xl+F6lEhzk3XnE7TKF9vmChi8rgR82YI84lSvb24DBJG7PXHQHNrQdZj+XnlSy7op9JSKs7zTsO368NNBCUfkYx/o8KCyMnCwORaeqwc6gnI81S7wxiORVmV3T++s3UJjKBgKTehtFsJr0El/o48XvZGjXxsADz6DQoddFnHpRLPhvdhOYfA0Ejb5nYGHbOKzswqe5RNd40MqH+M7Wdhe8t93/QzJ3SAKAfYTfAhKrftIC9l/OJFDz+rgvLva4y8v/NbxnuJ3oRLm5DNNUttkdBfd8JF60NEcbaFUbQV9q+IV0X0wcY3wc3PjBAE0OXSrAgMBAAECggEBAKg+6/MtlnzvRsY0UXM935X+JRxW2fzpRUX8FNLLlOem2/I21q+16sEkT3LH2OVku6ImUCLKQhfwU7OU1ONygwoMRxJT1hKtMHytf+V371TWqx1ik0tJ5gYIZkL57hBLUt2R0yKHFxXeON63Iwci6PnZb27iHx/Fr9DnYLfpVkaCDGB+jEG58TE/L5/r4I9neK2HfLzKqXdx9EX/Ko85FwnyHlKNHnejV9E4tZkHxdBpV4au0ovrY9ocqnUfcwp1zGDfEt8l9vuGShBB+9iNjbnlpptvJ8ZR9Ky3LSsLwozcJSTcufaVimZh7nNyy5BmOZEHZfe0l/10h3kYwmwQbTECgYEA+Yj29Abhv6aU7fSMHj8ZLZv5wBZdhFa1rldJxbdXTlhb20nlncqQTmVVk88P/NsftM+ROXncsPHX+ggKQd6yNgRoLWrPm109cnXXJ1W8TyFbk+TQgCziKBeHF3tMq6TMOX76sBQcaLR6xuJnI345KpSXdxt2we0yEURIJ6iwoh8CgYEA2r3P0Vn+qUAjQ37Mo4G8XC4aTEFJhrwCWbmqZBJcVn4gJWX9dtbJqD5+7tBtJiKJKO9giuVSre+eUuJMR9pXZYMa3esUqoemE1v/A6lkG+3IZYI3+lQLNNViTpwDAqsKCwSHalHyEuegD2+/4/E95bHfm0JDJGUrewHRYtAaE/UCgYBoDXTszPHVuODhWNgUxLr7Cc9bCfh09rNLv5pDl/AP+0hSaL4WziDej+Lff7hq9/SAsQ0dqnMcVbx5xmCAlxw46h2G0sM/ReIZmInfHSEo3gAR65gF2rFzhlwOrpuJ924xi4F9auVtw9RumnnnkvrDhrKiOBGNTBtUl+R+pRkCgQKBgAvKwcJKdLURFRWVZ1jFLK9XeOl1d45A4muN28arSrkK8Zayidh3OcXNILClIc01fWlshirWs/9WdJWJR410EtQRHkiqXKHY0DYo9nVvE0uCJRR70aK4FyaQ/ky4klz5dYAkjVxI8KDeRb2vS4vxPGH+lcxb5Ry4K4DlFzGZgF5lAoGBANrYl/97i7yLPWkcr+lU2rq8tMA95Vq1a53Ffl9AJRISZXeeW2iDVN+mzXlu2+t7Vbhp9XZGKjG17yCppe2k9Nm0OfTE5z0u7RDkCBcJOur0uJndEvmM4EvYb7hcZYGHFVKzATfkql/9531NPHeDwQ0SKXYweHj3B2XihltPU7vr
