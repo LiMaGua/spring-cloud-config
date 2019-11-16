@@ -1,6 +1,6 @@
 spring:
   application:
-    name: hello-spring-cloud-service-sso
+    name: service-sso
   thymeleaf:
     cache: false
     mode: LEGACYHTML5
@@ -15,6 +15,12 @@ spring:
     port: 6379
     password: AZ2.3sdfawsx23
     max-idle: 8
+  thymeleaf:
+    cache: false #开发时关闭缓存,实时页面
+    mode: LEGACYHTML5 #非严格得html
+    enabled: UTF-8
+    servlet:
+      content-type: text/html
 
 feign:
   hystrix:
