@@ -18,7 +18,7 @@ spring:
   thymeleaf:
     cache: false #开发时关闭缓存,实时页面
     mode: LEGACYHTML5 #非严格得html
-    enabled: UTF-8
+    encoding: UTF-8
     servlet:
       content-type: text/html
 
@@ -28,7 +28,7 @@ feign:
 
 
 server:
-  port: 999
+  port: 9990
 
 eureka:
   client:
