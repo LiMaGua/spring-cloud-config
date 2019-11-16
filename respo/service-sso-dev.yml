@@ -1,0 +1,30 @@
+spring:
+  application:
+    name: hello-spring-cloud-service-sso
+  thymeleaf:
+    cache: false
+    mode: LEGACYHTML5
+    encoding: UTF-8
+    servlet:
+      content-type: text/html
+  zipkin:
+    base-url: http://localhost:9411
+  redis: 
+    database: 0
+    host: 106.15.186.202
+    port: 6379
+    password: AZ2.3sdfawsx23
+    max-idle: 8
+
+feign:
+  hystrix:
+    enabled: true
+
+
+server:
+  port: 999
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:7777/eureka/
